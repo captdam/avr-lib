@@ -1,0 +1,70 @@
+//Task config: workspace/.vscode/tasks.json
+{
+	"version": "2.0.0",
+	"options": {
+		"env": {
+			"mcu_type": "atmega2560",
+			"mcu_speed": "16000000UL",
+
+			"customlib_dir": "~/Dev/libavr",
+
+			"upload_port": "/dev/ttyUSB0",
+			
+			"compile_source": "${workspaceFolder}/*.c",
+			"assembly_source": "${workspaceFolder}/main.asm",
+			"bin_obj_file": "${workspaceFolder}/a.bin",
+			"disassembly_text": "${workspaceFolder}/a.asm",
+		}
+	},
+	"tasks": [
+		{
+			"label": "MCU - Compile current file",
+			"type": "shell",
+			"command": "avr-gcc",
+			"args": ["$compile_source", "-o", "$bin_obj_file", "-I$customlib_dir", "-mmcu=$mcu_type", "-D", "F_CPU=$mcu_speed"],
+			"options": {
+				"cwd": "/usr/bin"
+			},
+			"problemMatcher": ["$gcc"],
+			"group": {
+				"kind": "test",
+				"isDefault": true
+			}
+		},
+		{
+			"label": "MCU - Compile current file (Optimized)",
+			"type": "shell",
+			"command": "avr-gcc",
+			"args": ["$compile_source", "-o", "$bin_obj_file", "-O3", "-I$customlib_dir", "-mmcu=$mcu_type", "-D", "F_CPU=$mcu_speed"],
+			"options": {
+				"cwd": "/usr/bin"
+			},
+			"problemMatcher": ["$gcc"],
+			"group": {
+				"kind": "build",
+				"isDefault": true
+			}
+		},
+		{
+			"label": "MCU - Upload previous compiled/assembled object",
+			"type": "shell",
+			"command": "avrdude",
+			"args": ["-p", "$mcu_type", "-c", "arduino", "-P", "$upload_port", "-b", "19200", "-i", "1000", "-U", "flash:w:$bin_obj_file"],
+			"problemMatcher": []
+		},
+		{
+			"label": "MCU - Download MCU image",
+			"type": "shell",
+			"command": "avrdude",
+			"args": ["-p", "$mcu_type", "-c", "arduino", "-P", "$upload_port", "-b", "19200", "-i", "1000", "-U", "flash:w:$bin_obj_file"],
+			"problemMatcher": []
+		},
+		{
+			"label": "MCU - Disassembly previous compiled/assembled/downloaded object",
+			"type": "shell",
+			"command": "avr-objdump",
+			"args": ["$bin_obj_file", "-rS", ">", "$disassembly_text"],
+			"problemMatcher": []
+		}
+	]
+}

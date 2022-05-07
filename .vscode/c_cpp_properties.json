@@ -1,0 +1,17 @@
+//AVR gcc config: workspace/.vscode/c_cpp_properties.json
+{
+	"configurations": [
+		{
+			"name": "Linux avr-gcc",
+			"intelliSenseMode": "clang-x64",
+			"includePath": ["/usr/lib/avr/include"/*, "~/Dev/avr-lib"*/],
+			"compilerPath": "/usr/lib/avr/bin",
+			"browse": {
+				"path": ["${workspaceFolder}"],
+				"limitSymbolsToIncludedHeaders": true,
+				"databaseFilename": ""
+			}
+		}
+	],
+	"version": 4
+}
