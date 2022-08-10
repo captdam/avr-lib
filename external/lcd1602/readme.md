@@ -2,7 +2,13 @@
 
 ## Use this lib
 
-This lib assume user connects the LCD1602 module to MCU using 4-bit bus. 
+This lib assume user connects the LCD1602 module to MCU using 4-bit bus.
+
+This lib has been tested on:
+- [X] ATmega328/P
+- [X] ATtiny44
+
+This lib should be able to run on all 8-bit AVR MCUs. Note that, this lib relies on timer event to send data to LCD module; however, different MCU model may has different timer SFR layout, user needs to check the manual to configue the timer. For example, timer 0 SFRs on m328 and t44 has same name, so the C code of setting up the timer can be used on both platform; however, the actual address is different, and the name of ISR (using gcc-avr) is different.
 
 User should first init this lib with ```lcd1602_init()```;
 
